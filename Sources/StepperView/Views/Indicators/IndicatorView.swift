@@ -66,7 +66,7 @@ struct IndicatorView: View {
                 .eraseToAnyView()
         case .animation(let view):
                 let delays = generateDelays()
-                return NumberedCircleView(text: view.text, width: view.width, delay: delays[index], triggerAnimation: true)
+                return NumberedCircleView(text: view.text, width: view.width, lineWidth: view.lineWidth, delay: delays[index], triggerAnimation: true)
                     .widthPreference(column: index)
                     .eraseToAnyView()
         }

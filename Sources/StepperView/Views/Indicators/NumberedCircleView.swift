@@ -14,6 +14,8 @@ public struct NumberedCircleView: View {
     var text:String
     /// width of the step indicator
     var width:CGFloat
+    /// lineWidth of the border stroke of step indicator
+    var lineWidth: CGFloat
     /// color of the step indicator
     var color:Color
     /// delay for the animation to happen
@@ -26,11 +28,12 @@ public struct NumberedCircleView: View {
     @Environment(\.loadAnimationTime) var loadingTime
        
     ///initilazes `text` ,  `width`, `color` , `delay` and  `triggerAnimation`
-    public init(text: String, width: CGFloat = 30.0, color: Color = Colors.teal.rawValue,
+    public init(text: String, width: CGFloat = 30.0, lineWidth: CGFloat = 2.0, color: Color = Colors.teal.rawValue,
                 delay:Double = 0.0,
                 triggerAnimation:Bool = false) {
         self.text = text
         self.width = width
+        self.lineWidth = lineWidth
         self.color = color
         self.delay = delay
         self.triggerAnimation = triggerAnimation
@@ -38,7 +41,7 @@ public struct NumberedCircleView: View {
     
     /// provides the content and behavior of this view.
     public var body: some View {
-        AnimatedCircle(text: text, width: width, color: color,
+        AnimatedCircle(text: text, width: width, lineWidth: lineWidth, color: color,
                        delay: delay, triggerAnimation: triggerAnimation,
                        loadingTimer: LoadingTimer(value: loadingTime),
                        animate: $animate)
@@ -52,6 +55,8 @@ struct AnimatedCircle: View {
     var text:String
     /// width of the step indicator
     var width:CGFloat
+    /// lineWidth of the border stroke of step indicator
+    var lineWidth: CGFloat
     /// color of the step indicator
     var color:Color
     /// delay for the animation to happen
@@ -75,14 +80,14 @@ struct AnimatedCircle: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(lineWidth: 2.0)
+                .stroke(lineWidth: self.lineWidth)
                 .opacity(animate ? 0.3 : 1.0)
                 .foregroundColor(self.color)
                 .frame(width: width, height: width)
             
             Circle()
                 .trim(from: 0.0, to: animate ? circleProgress : 1.0)
-                .stroke(style: StrokeStyle(lineWidth: 2.0, lineCap: .round, lineJoin: .round))
+                .stroke(style: StrokeStyle(lineWidth: self.lineWidth, lineCap: .round, lineJoin: .round))
                 .frame(width: width, height: width)
                 .foregroundColor(self.color)
                 .rotationEffect(Angle(degrees: Utils.angleRotation))
